@@ -21,7 +21,7 @@ def get_one_prime():
             Buf.append(i)
             return random.choice(Buf)
 
-a = get_one_prime()
+
 
 def primary_primitive_root(input):
     #g
@@ -34,17 +34,17 @@ def private_key(input):
     #x
     Buf = [i for i in range(1,input)]
     return random.SystemRandom().choice(Buf)
-x = private_key(a)
-g = primary_primitive_root(a)
-def public_key_generate(prime):
+
+def public_key_generate(prime,g,x):
     #y
-    return (g**x) % prime
+    Buf = (g**x) % prime
+    if Buf == 1:
+        return 3
+    else:
+        return Buf
 
 
 
-
-
-y = public_key_generate(a)
 def random_k(prime):
     #k
     Buf = [i for i in range(1, prime-1)]
@@ -69,6 +69,11 @@ def decrypt(opt,prime,key):
     for i in opt:
         Buf.append(chr((i[1]*(i[0]**(prime-1-key)))%prime))
     return Buf
+
+a = get_one_prime()
+x = private_key(a)
+g = primary_primitive_root(a)
+y = public_key_generate(a,g,x)
 
 print("Our prime is: "+str(a))
 print("Our primary primitive root is(g): "+ str(g))
